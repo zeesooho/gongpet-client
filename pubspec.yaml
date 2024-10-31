@@ -1,0 +1,44 @@
+name: gongpet
+description: "A new Flutter project."
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+
+  kakao_flutter_sdk_common: ^1.9.6 # 카카오 로그인 API 패키지
+  kakao_flutter_sdk_user: ^1.9.5 # 카카오 로그인 API 패키지
+  flutter_dotenv: ^5.1.0 # Config 파일 관리 패키지
+
+  flutter_riverpod: ^2.5.1 # 상태관리 패키지
+  retrofit: ^4.4.1 # REST API 간편하게 사용할 수 있는 패키지
+  dio: ^5.7.0 # HTTP 요청 간편하게 할 수 있게 도와주는 패키지
+
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+  shared_preferences: ^2.3.2 # 간단한 정보 저장을 위한 패키지
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+  change_app_package_name: ^1.3.0 # 패키지명 편하게 바꿔주는 플러그인
+  freezed: ^2.5.7 # 데이터 클래스 생성 패키지
+  build_runner: ^2.4.12 # watch를 위한 패키지
+  json_serializable: ^6.8.0 # toJson, fromJson 편하게 쓰기 위한 패키지
+  retrofit_generator: ^9.1.3
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/config.env
+    - assets/images/
