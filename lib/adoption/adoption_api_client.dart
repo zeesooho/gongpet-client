@@ -20,6 +20,13 @@ abstract class AdoptionApiClient {
     @Query('numOfRows') String? numOfRows,
     @Query('upkind') String? upkind,
     @Query('state') String? state,
+    @Query('bgnde') String? bgnde,
+    @Query('endde') String? endde,
+    @Query('upr_cd') String? uprCd,
+    @Query('org_cd') String? orgCd,
+    @Query('care_reg_no') String? careRegNo,
+    @Query('kind') String? kind,
+    @Query('neuter_yn') String? neuterYn,
   });
 
   @GET("/stray-dog/sido")
@@ -37,6 +44,6 @@ abstract class AdoptionApiClient {
 }
 
 final adoptionApiClientProvider = Provider<AdoptionApiClient>((ref) {
-  final dio = ref.watch(dioProvider);
+  final dio = ref.watch(baseDioProvider);
   return AdoptionApiClient(dio);
 });

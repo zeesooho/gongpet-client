@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:gongpet/auth/auth_state.dart';
+import 'package:gongpet/auth/providers/auth_provider.dart';
 import 'package:gongpet/auth/pages/login_page.dart';
 import 'package:gongpet/auth/pages/profile_page.dart';
 import 'package:gongpet/community/pages/community_page.dart';

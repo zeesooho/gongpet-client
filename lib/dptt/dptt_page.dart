@@ -15,7 +15,7 @@ class DpttTestSheet {
 }
 
 final dpttTestSheetProvider = FutureProvider<DpttTestSheet>((ref) async {
-  final dio = ref.read(dioProvider);
+  final dio = ref.read(baseDioProvider);
   try {
     final response = await dio.get('/dptt/test-sheet');
     if (response.statusCode == 200) {

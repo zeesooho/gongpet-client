@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gongpet/community/post_client.dart';
+import 'package:gongpet/community/post_api_client.dart';
 import 'package:gongpet/global/custom_dio.dart';
 
 final postClientProvider = Provider((ref) {
-  final dio = ref.watch(dioProvider);
-  return PostClient(dio);
+  final dio = ref.watch(authDioProvider);
+  return PostApiClient(dio);
 });
 
 final selectedCategoryProvider = StateProvider<int?>((ref) => null);

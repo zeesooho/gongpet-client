@@ -19,7 +19,7 @@ class AdoptionDetailPage extends StatelessWidget {
           children: [
             Image.network(dog.popfile, height: 200, width: double.infinity, fit: BoxFit.cover),
             SizedBox(height: 16),
-            Text('종류: ${dog.kindCd}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text('종류: ${dog.kindCd.replaceAll('[개] ', '')}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
             Text('발견 장소: ${dog.happenPlace}'),
             Text('발견 일자: ${dog.happenDt}'),

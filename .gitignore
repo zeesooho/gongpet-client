@@ -71,3 +71,6 @@ web/
 test/
 *.log
 /assets/*
+
+*.freezed.dart
+*.g.dart

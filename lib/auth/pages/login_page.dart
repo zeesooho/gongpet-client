@@ -1,21 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gongpet/auth/auth_state.dart';
+import 'package:gongpet/auth/providers/auth_provider.dart';
 
 class LoginPage extends ConsumerWidget {
   const LoginPage({Key? key}) : super(key: key);
-
-  // 카카오톡 앱으로 로그인 함수 (실제 구현은 별도로 작성 필요)
-  Future<void> _loginWithKakaoApp(WidgetRef ref) async {
-    // TODO: Implement Kakao app login
-    await ref.read(authStateProvider.notifier).login('temp_token', 'temp_refresh_token');
-  }
-
-  // 카카오톡 계정으로 로그인 함수 (실제 구현은 별도로 작성 필요)
-  Future<void> _loginWithKakaoAccount(WidgetRef ref) async {
-    // TODO: Implement Kakao account login
-    await ref.read(authStateProvider.notifier).login('temp_token', 'temp_refresh_token');
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,16 +15,28 @@ class LoginPage extends ConsumerWidget {
           children: [
             ElevatedButton(
               onPressed: () async {
-                await _loginWithKakaoApp(ref);
+                try {
+                  await ref.read(authStateProvider.notifier).loginWithKakao();
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('로그인 실패: $e')),
+                    );
+                  }
+                }
               },
-              child: const Text('카카오톡 앱으로 로그인'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                await _loginWithKakaoAccount(ref);
-              },
-              child: const Text('카카오톡 계정으로 로그인'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFFEE500),
+                foregroundColor: const Color(0xFF000000),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+              ),
+              child: Image.asset(
+                'assets/images/kakao_login_medium_narrow.png',
+                height: 30,
+              ),
             ),
           ],
         ),

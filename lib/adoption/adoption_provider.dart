@@ -62,15 +62,31 @@ class AdoptionStateNotifier extends StateNotifier<AdoptionState> {
     state = state.copyWith(isLoading: true);
     final sidos = await _apiClient.getSido();
     state = state.copyWith(sidos: sidos, isLoading: false);
+    loadStrayDogs(refresh: true);
   }
 
   Future<void> loadSigungu(String uprCd) async {
-    if (state.sigunguMap.containsKey(uprCd)) return;
-    state = state.copyWith(isLoading: true);
-    final sigungus = await _apiClient.getSigungu(uprCd);
+    state = state.copyWith(sigunguMap: {}, isLoading: true);
+
+    try {
+      final sigungus = await _apiClient.getSigungu(uprCd);
+      state = state.copyWith(
+        sigunguMap: {uprCd: sigungus},
+        isLoading: false,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        sigunguMap: {},
+        isLoading: false,
+      );
+    }
+  }
+
+  void updateFilter(SearchFilter newFilter) {
     state = state.copyWith(
-      sigunguMap: {...state.sigunguMap, uprCd: sigungus},
-      isLoading: false,
+      filter: newFilter,
+      strayDogs: [],
+      currentPage: 1,
     );
   }
 
@@ -87,20 +103,44 @@ class AdoptionStateNotifier extends StateNotifier<AdoptionState> {
   Future<void> loadStrayDogs({bool refresh = false}) async {
     final newPage = refresh ? 1 : state.currentPage;
     state = state.copyWith(isLoading: true, currentPage: newPage);
-    final newDogs = await _apiClient.getStrayDogs(
-      state.filter.toJson(),
-      pageNo: newPage.toString(),
-      numOfRows: '10',
-    );
-    state = state.copyWith(
-      strayDogs: refresh ? newDogs : [...state.strayDogs, ...newDogs],
-      isLoading: false,
-      currentPage: newPage + 1,
-    );
+
+    try {
+      final filter = state.filter;
+      final newDogs = await _apiClient.getStrayDogs(
+        filter.toJson(),
+        pageNo: newPage.toString(),
+        numOfRows: '10',
+        state: filter.state,
+        bgnde: filter.bgnde,
+        endde: filter.endde,
+        uprCd: filter.uprCd,
+        orgCd: filter.orgCd,
+        careRegNo: filter.careRegNo,
+        kind: filter.kind,
+        neuterYn: filter.neuterYn,
+      );
+
+      state = state.copyWith(
+        strayDogs: refresh ? newDogs : [...state.strayDogs, ...newDogs],
+        isLoading: false,
+        currentPage: newPage + 1,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+      );
+    }
   }
 
-  void updateFilter(SearchFilter newFilter) {
-    state = state.copyWith(filter: newFilter);
-    loadStrayDogs(refresh: true);
+  Future<void> applyFilter() async {
+    state = state.copyWith(isLoading: true, strayDogs: [], currentPage: 1);
+    await loadStrayDogs(refresh: true);
+  }
+
+  void clearSigungu(String uprCd) {
+    state = state.copyWith(
+      sigunguMap: {...state.sigunguMap}..remove(uprCd),
+      filter: state.filter.copyWith(orgCd: null),
+    );
   }
 }
